@@ -22,6 +22,11 @@ class Curso extends Model
         'valor' => 'float'
     ];
 
+    public function turmas()
+    {
+        return $this->hasMany(Turma::class);
+    }
+
     public function matriculas()
     {
         return $this->hasMany(Matricula::class);

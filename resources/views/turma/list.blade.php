@@ -3,8 +3,9 @@
 @section('conteudo')
     <div class="row">
 
-        <h3>Listagem de Cursos</h3>
-        <form action="{{ route('curso.search') }}" method="post">
+        <h3>Listagem de Turmas</h3>
+        <h5>Curso: {{ $curso->nome }}</h5>
+        <form action="{{ route('turma.search') }}" method="post">
             @csrf
             <div class="row">
                 <div class="col-2">
@@ -21,7 +22,8 @@
                 </div>
                 <div class="col-5">
                     <button type="submit" class="btn btn-primary">Buscar</button>
-                    <a href="{{ url('curso/create') }}" class="btn btn-success"> Novo</a>
+                    <a href="{{ route('curso.turmas.create',$curso) }}" class="btn btn-success"> Novo</a>
+                    <a href="{{ url('curso') }}" class="btn btn-secondary"> Voltar</a>
                 </div>
             </div>
         </form>
@@ -35,9 +37,9 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Requisito</th>
-                    <th scope="col">Carga Horária</th>
-                    <th scope="col">Valor</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Data Início</th>
+                    <th scope="col">Data Fim</th>
                     <th scope="col">Ação</th>
                     <th scope="col">Ação</th>
                 </tr>
@@ -47,18 +49,14 @@
                     <tr>
                         <th scope='row'>{{ $item->id }}</th>
                         <td>{{ $item->nome }}</td>
-                        <td>{{ $item->requisito }}</td>
-                        <td>{{ $item->carga_horaria }}</td>
-                        <td>{{ $item->valor }}</td>
+                        <td>{{ $item->codigo }}</td>
+                        <td>{{ date('d/m/Y', strtotime($item->data_inicio)) }}</td>
+                        <td>{{ date('d/m/Y', strtotime($item->data_fim)) }}</td>
                         <td>
-                            <a class='btn btn-primary' title='Turmas'
-                                href="{{ route('curso.turmas', $item->id) }}">Ver Turmas {{ $item->turmas->count()}}</a>
+                            <a class='btn btn-warning' title='Editar' href="{{ route('turma.edit', $item->id) }}">Editar</a>
                         </td>
                         <td>
-                            <a class='btn btn-warning' title='Editar' href="{{ route('curso.edit', $item->id) }}">Editar</a>
-                        </td>
-                        <td>
-                            <form action="{{ route('curso.destroy', $item->id) }}" method="post">
+                            <form action="{{ route('turma.destroy', $item->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class='btn btn-danger' title='Exclur'

@@ -8,18 +8,19 @@ use Illuminate\Http\Request;
 
 class TurmaController extends Controller
 {
-    public function index()
+    public function index(Curso $curso)
     {
-        $dados = Turma::All();
+        $dados = $curso->turmas;
 
-        return view('turma.list')->with(['dados' => $dados]);
+        return view('turma.list')->with([
+            'dados' => $dados,
+            'curso' => $curso,
+        ]);
     }
 
-    function create()
+    function create(Curso $curso)
     {
-        $cursos = Curso::orderBy('nome')->get();
-
-        return view('turma.form')->with(compact('cursos'));
+        return view('turma.form')->with(compact('curso'));
     }
 
 
@@ -27,10 +28,8 @@ class TurmaController extends Controller
     {
         $request->validate([
             'nome' => 'required',
-            'curso_id' => 'required',
         ], [
             'nome.required' => "O :attribute é obrigatorio",
-            'curso_id.required' => "O :attribute é obrigatorio",
         ]);
     }
 
@@ -41,42 +40,46 @@ class TurmaController extends Controller
 
         $data = $request->all();
 
-        Turma::create($data);
+        $turma = Turma::create($data);
 
-        return redirect('turma')->with("success", 'Registro Salvo com sucesso!');
+        return redirect()->route('curso.turmas', $turma->curso_id)->with("success", 'Registro Salvo com sucesso!');
     }
 
     function edit($id)
     {
         $data = Turma::find($id);
-        $cursos = Curso::orderBy('nome')->get();
+        $curso = Curso::find($data->curso_id);
 
         // dd($categorias);
-        return view('turma.form')->with(compact('data', 'cursos'));
+        return view('turma.form')->with(compact('data', 'curso'));
     }
 
 
     function update(Request $request, $id)
     {
-        //dd($request->all());
         $this->validateForm($request);
 
         $data = $request->all();
 
         Turma::find($id)->update($data);
 
-        return redirect('turma')->with("success", 'Registro Atualizado com sucesso!');
+        return redirect()->route('curso.turmas', $request->curso_id)->with("success", 'Registro Atualizado com sucesso!');
     }
 
     function destroy($id)
     {
+        $data = Turma::find($id);
+
         Turma::destroy($id);
 
-        return redirect('turma')->with("success", 'Registro removido com sucesso!');
+        return redirect()->route('curso.turmas', $data->curso_id)->with("success", 'Registro removido com sucesso!');
     }
 
     public function search(Request $request)
     {
+        //dd('teste');
+        $curso = Turma::findOrFail($request->curso_id);
+
         if (!empty($request->valor)) {
             $dados = Turma::where(
                 $request->tipo,
@@ -87,6 +90,9 @@ class TurmaController extends Controller
             $dados = Turma::All();
         }
 
-        return view('turma.list', compact('dados'));
+        return redirect()->route('curso.turmas', $request->curso_id)->with([
+            'dados' => $dados,
+            'curso' => $curso,
+        ]);
     }
 }
