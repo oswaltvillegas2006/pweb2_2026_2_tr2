@@ -33,6 +33,11 @@ Route::post(
     [AlunoController::class, 'search']
 )->name('aluno.search');
 
+Route::get(
+    '/curso/report',
+    [\App\Http\Controllers\CursoController::class, 'report']
+)->name('curso.report');
+
 Route::resource('curso', \App\Http\Controllers\CursoController::class);
 
 Route::get('/curso/{curso}/turmas',
