@@ -10,7 +10,7 @@
 <body>
     <div class="row">
 
-        <h3>Listagem de Cursos</h3>
+        <h3>{{ $titulo }}</h3>
 
 
     </div>
@@ -29,6 +29,9 @@
             </thead>
             <tbody>
                 @foreach ($dados as $item)
+                <h4>Curso: $item->nome </h4>
+
+                
                     <tr>
                         <th scope='row'>{{ $item->id }}</th>
                         <td>{{ $item->nome }}</td>

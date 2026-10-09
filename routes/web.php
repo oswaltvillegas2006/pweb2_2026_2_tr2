@@ -38,6 +38,11 @@ Route::get(
     [\App\Http\Controllers\CursoController::class, 'report']
 )->name('curso.report');
 
+Route::get(
+    '/curso/reportMatricula',
+    [\App\Http\Controllers\CursoController::class, 'reportMatricula']
+)->name('curso.reportMatricula');
+
 Route::resource('curso', \App\Http\Controllers\CursoController::class);
 
 Route::get('/curso/{curso}/turmas',

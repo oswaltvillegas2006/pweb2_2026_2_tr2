@@ -23,6 +23,8 @@
                     <button type="submit" class="btn btn-primary">Buscar</button>
                     <a href="{{ url('curso/create') }}" class="btn btn-success"> Novo</a>
                     <a href="{{ url('curso/report') }}" class="btn btn-success"> Relatório</a>
+                    <a href="{{ url('curso/reportMatricula') }}" class="btn btn-success"> Relatório de Matrículas</a>
+
                 </div>
             </div>
         </form>
